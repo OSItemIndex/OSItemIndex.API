@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OSItemIndex.API</name>
+    </assembly>
+    <members>
+        <member name="M:OSItemIndex.API.Controllers.ItemsController.GetItems">
+            <summary>
+            asdasdasd
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.ID">
+            <summary>
+            Unique OSRS item ID number.
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.Name">
+            <summary>
+            The name of the item.
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.Duplicate">
+            <summary>
+            If the item is a duplicate.
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.Noted">
+            <summary>
+            If the item is noted.
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.Placeholder">
+            <summary>
+            If the item is a placeholder.
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.Stackable">
+            <summary>
+            If the item is stackable (in inventory).
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.LastUpdated">
+            <summary>
+            The last time (UTC) the item was updated (in ISO8601 date format).
+            </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.Item.Document">
+            <summary>
+            OSRSBox item document.
+            </summary>
+        </member>
+    </members>
+</doc>
