@@ -13,25 +13,25 @@ namespace OSItemIndex.API.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly OSItemIndexContext _context;
+        private readonly OSItemIndexDbContext _context;
 
-        public ItemsController(OSItemIndexContext context)
+        public ItemsController(OSItemIndexDbContext context)
         {
             _context = context;
         }
 
         // GET: api/items
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItems()
+        public async Task<ActionResult<IEnumerable<OSRSBoxItem>>> GetItems()
         {
             return await _context.Items.ToListAsync();
         }
 
         // GET: api/items/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Item>> GetItem(int id)
+        public async Task<ActionResult<OSRSBoxItem>> GetItem(int id)
         {
-            var i = new Item();
+            var i = new OSRSBoxItem();
             return i;
         }
 

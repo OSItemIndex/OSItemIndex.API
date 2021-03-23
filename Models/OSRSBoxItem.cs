@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSItemIndex.API.Models
 {
-    public partial class Item
+    public class OSRSBoxItem
     {
         /// <summary>
         /// Unique OSRS item ID number.
@@ -58,7 +58,6 @@ namespace OSItemIndex.API.Models
         /// OSRSBox item document.
         /// </summary>
         [Column(TypeName = "json")]
-        [JsonProperty(Required = Required.Always)]
         public string Document { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace OSItemIndex.API.Models
 {
-    public class WGPrice
+    public class WeirdGloopPrice
     {
         /// <summary>
         /// Unique OSRS item ID number.
