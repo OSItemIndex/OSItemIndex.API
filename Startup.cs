@@ -30,7 +30,9 @@ namespace OSItemIndex.API
                 c.IncludeXmlComments(filePath);
             });
             services.AddSwaggerGenNewtonsoftSupport();
+
             services.AddEntityFrameworkDatabases(Configuration); // use our DbExtensions to create our db context(s)
+            services.AddEntityFrameworkRepositories(); // use our DbExtensions to create our repositories
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

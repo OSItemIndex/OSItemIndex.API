@@ -13,18 +13,19 @@ namespace OSItemIndex.API.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly OSItemIndexDbContext _context;
+        private readonly OSItemIndexDbContext db;
 
-        public ItemsController(OSItemIndexDbContext context)
+        public ItemsController(OSItemIndexDbContext dbContext)
         {
-            _context = context;
+            db = dbContext;
         }
 
         // GET: api/items
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OSRSBoxItem>>> GetItems()
         {
-            return await _context.Items.ToListAsync();
+            db.Items.Where
+            return await db.Items.ToListAsync();
         }
 
         // GET: api/items/{id}
@@ -37,11 +38,18 @@ namespace OSItemIndex.API.Controllers
 
         // POST: api/items
         [HttpPost]
-        public async Task<IActionResult> PostItem()
+        public async Task<IActionResult> PostItem(OSRSBoxItem[] items)
         {
-            
-            return Ok();
-            //return await _context.Items.FindAsync(id);
+            try
+            {
+                db.UpdateRange(items);
+                db.SaveChanges();
+                return Ok();
+            } catch (Exception ex)
+            {
+
+            }
+            return BadRequest();
         }
     }
 }

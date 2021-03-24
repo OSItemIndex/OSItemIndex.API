@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OSItemIndex.API.Models
 {
-    public class RealtimePrice
+    public class IPriceModel
     {
     }
 }

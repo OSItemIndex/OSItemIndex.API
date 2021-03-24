@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OSItemIndex.API.Models;
+using OSItemIndex.API.Repositories;
 
 namespace OSItemIndex.API.Data
 {
@@ -16,6 +18,14 @@ namespace OSItemIndex.API.Data
 
             var dbOptions = configuration.Get<DbOptions>();
             services.AddDbContext<OSItemIndexDbContext>(options => options.UseNpgsql(dbOptions.DbConnectionString));
+
+            return services;
+        }
+
+        public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
+        {
+            services.AddSingleton<IItemsRepository, ItemsRepository>();
+            services.AddSingleton<IPricesRepository<RSBuddyPrice>, RSBuddyPriceRepository>();
 
             return services;
         }

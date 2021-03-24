@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace OSItemIndex.API.Models
 {
-    public class RSBuddyPrice
+    public class RSBuddyPrice : IPriceModel
     {
         /// <summary>
         /// Unique OSRS item ID number.
