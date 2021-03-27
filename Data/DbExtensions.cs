@@ -22,14 +22,6 @@ namespace OSItemIndex.API.Data
             return services;
         }
 
-        public static IServiceCollection AddEntityFrameworkRepositories(this IServiceCollection services)
-        {
-            services.AddSingleton<IItemsRepository, ItemsRepository>();
-            services.AddSingleton<IPricesRepository<RSBuddyPrice>, RSBuddyPriceRepository>();
-
-            return services;
-        }
-
         public static IApplicationBuilder InitializeDatabases(this IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())

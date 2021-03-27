@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OSItemIndex.API.Repositories;
+using OSItemIndex.API.Models;
+using OSItemIndex.API.Services;
 
 namespace OSItemIndex.API
 {
@@ -31,8 +34,10 @@ namespace OSItemIndex.API
             });
             services.AddSwaggerGenNewtonsoftSupport();
 
-            services.AddEntityFrameworkDatabases(Configuration); // use our DbExtensions to create our db context(s)
-            services.AddEntityFrameworkRepositories(); // use our DbExtensions to create our repositories
+            services.AddEntityFrameworkDatabases(Configuration);
+
+            services.AddTransient<IItemsRepository, ItemsRepository>();
+            services.AddTransient<IItemsService, ItemsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
