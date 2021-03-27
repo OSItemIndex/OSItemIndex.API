@@ -10,29 +10,29 @@ namespace OSItemIndex.API.Repositories
 {
     public class ItemsRepository : IItemsRepository
     {
-        private OSItemIndexDbContext dbContext;
+        private readonly OSItemIndexDbContext _context;
 
         public ItemsRepository(OSItemIndexDbContext context)
         {
-            dbContext = context;
+            _context = context;
         }
 
-        public async Task<OSRSBoxItem> GetItemAsync(object id)
+        public Task<OSRSBoxItem> GetAsync(object id)
         {
-            return await dbContext.Items.FindAsync(id);
+            return _context.Items.FindAsync(id).AsTask();
         }
 
-        public async Task<IEnumerable<OSRSBoxItem>> GetItemsAsync()
+        public async Task<IEnumerable<OSRSBoxItem>> GetAllAsync()
         {
-            return await dbContext.Items.ToListAsync();
+            return await _context.Items.ToListAsync();
         }
 
-        public async Task<IEnumerable<OSRSBoxItem>> GetItemsAsync(
-            Expression<Func<OSRSBoxItem, bool>> filter = null, 
-            Func<IQueryable<OSRSBoxItem>, IOrderedQueryable<OSRSBoxItem>> orderBy = null, 
+        public async Task<IEnumerable<OSRSBoxItem>> GetAllAsync(
+            Expression<Func<OSRSBoxItem, bool>> filter = null,
+            Func<IQueryable<OSRSBoxItem>, IOrderedQueryable<OSRSBoxItem>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<OSRSBoxItem> query = dbContext.Items;
+            IQueryable<OSRSBoxItem> query = _context.Items;
 
             if (filter != null)
             {
@@ -51,20 +51,31 @@ namespace OSItemIndex.API.Repositories
             if (orderBy != null)
             {
                 return await orderBy(query).ToListAsync();
-            } else
+            }
+            else
             {
                 return await query.ToListAsync();
             }
         }
 
-        public void Update(OSRSBoxItem item)
+        public Task<int> CountAsync()
         {
-            dbContext.Update(item);
+            return _context.Items.CountAsync();
         }
 
-        public void Update(IEnumerable<OSRSBoxItem> items)
+        public Task<OSRSBoxItem> UpsertAsync(OSRSBoxItem item)
         {
-            dbContext.UpdateRange(items);
+            return _context.Items.UpsertAsync(item, matchPredicate: m => m.Id == item.Id);
+        }
+
+        public Task<IEnumerable<OSRSBoxItem>> UpsertAllAsync(IEnumerable<OSRSBoxItem> items)
+        {
+            return _context.Items.UpsertRangeAsync(items, matchPredicate: (a, b) => a.Id == b.Id);
+        }
+
+        public Task<int> CommitAsync()
+        {
+            return _context.SaveChangesAsync();
         }
     }
 }
