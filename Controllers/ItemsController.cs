@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OSItemIndex.API.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using OSItemIndex.API.Models;
+using OSItemIndex.API.Services;
 
 namespace OSItemIndex.API.Controllers
 {
@@ -13,43 +12,40 @@ namespace OSItemIndex.API.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly OSItemIndexDbContext db;
+        private readonly IItemsService _service;
+        internal static DateTime lastUpsert; 
 
-        public ItemsController(OSItemIndexDbContext dbContext)
+        public ItemsController(IItemsService itemsService, OSItemIndexDbContext context)
         {
-            db = dbContext;
+            _service = itemsService;
         }
 
-        // GET: api/items
-        [HttpGet]
+        [HttpGet] // GET: api/items
         public async Task<ActionResult<IEnumerable<OSRSBoxItem>>> GetItems()
         {
-            db.Items.Where
-            return await db.Items.ToListAsync();
+            return Ok(await _service.GetItemsAsync());
         }
 
-        // GET: api/items/{id}
-        [HttpGet("{id}")]
+        [HttpGet] // GET: api/items/{id}
+        [Route("{id:int}")]
         public async Task<ActionResult<OSRSBoxItem>> GetItem(int id)
         {
-            var i = new OSRSBoxItem();
-            return i;
+            return Ok(await _service.GetItemAsync(id));
         }
 
-        // POST: api/items
-        [HttpPost]
-        public async Task<IActionResult> PostItem(OSRSBoxItem[] items)
+        [HttpPost] // POST: api/items
+        [RequestSizeLimit(int.MaxValue)]
+        public async Task<IActionResult> PostItem(IEnumerable<OSRSBoxItem> items)
         {
-            try
-            {
-                db.UpdateRange(items);
-                db.SaveChanges();
-                return Ok();
-            } catch (Exception ex)
-            {
-
-            }
-            return BadRequest();
+            lastUpsert = DateTime.Now;
+            return Ok(await _service.UpsertAndCommitItemsAsync(items));
         }
+
+/*        [HttpGet] // GET: api/items/stats
+        [Route("stats")]
+        public async Task<IActionResult> GetStatistics()
+        {
+            return Ok(lastUpsert.ToString());
+        }*/
     }
 }
