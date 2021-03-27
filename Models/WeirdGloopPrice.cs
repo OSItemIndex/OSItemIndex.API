@@ -1,32 +1,23 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OSItemIndex.API.Models
 {
-    public class WeirdGloopPrice
+    public class WeirdGloopPrice : PriceIdentity
     {
-        /// <summary>
-        /// Unique OSRS item ID number.
-        /// </summary>
-        [JsonProperty("id", Required = Required.Always)]
-        public int ID { get; set; }
-
-        /// <summary>
-        /// The name of the item.
-        /// </summary>
-        [JsonProperty("name", Required = Required.Always)]
-        public string Name { get; set; }
-
         /// <summary>
         /// The price of the item.
         /// </summary>
-        [JsonProperty("price", Required = Required.Always)]
-        public long Price { get; set; }
+        [Required]
+        [JsonPropertyName("price")]
+        public long? Price { get; set; }
 
         /// <summary>
         /// The timestamp (UTC) the item was updated (in ISO8601 date format).
         /// </summary>
-        [JsonProperty("timestamp", Required = Required.Always)]
-        public DateTime Timestamp { get; set; }
+        [Required]
+        [JsonPropertyName("timestamp")]
+        public DateTime? Timestamp { get; set; }
     }
 }

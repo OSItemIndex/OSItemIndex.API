@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace OSItemIndex.API.Models
 {
-    public class IPriceModel
+    public class PriceIdentity : ItemIdentity
     {
+
     }
 }
