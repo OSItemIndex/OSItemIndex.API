@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OSItemIndex.API.Models
 {
-    public interface IWikiRealtimePricingModel
+    public interface IWikiRealtimePriceModel
     {
         int? Id { get; set; }
     }
