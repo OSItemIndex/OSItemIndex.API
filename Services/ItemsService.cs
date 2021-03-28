@@ -26,6 +26,14 @@ namespace OSItemIndex.API.Services
             return _repo.GetAllAsync(orderBy: o => o.OrderBy(item => item.Id));
         }
 
+        public async Task<ItemsStatisics> GetStatisicsAsync()
+        {
+            return new ItemsStatisics()
+            {
+                TotalItemRecords = await _repo.CountAsync()
+            };
+        }
+
         public async Task<int> UpsertAndCommitItemsAsync(IEnumerable<OSRSBoxItem> items)
         {
             await _repo.UpsertAllAsync(items);

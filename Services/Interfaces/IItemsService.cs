@@ -24,6 +24,12 @@ namespace OSItemIndex.API.Services
         /// 
         /// </summary>
         /// <returns></returns>
+        Task<ItemsStatisics> GetStatisicsAsync();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         Task<int> UpsertAndCommitItemsAsync(IEnumerable<OSRSBoxItem> items);
     }
 }

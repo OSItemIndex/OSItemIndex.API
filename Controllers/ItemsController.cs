@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OSItemIndex.API.Models;
 using OSItemIndex.API.Services;
+using Serilog;
 
 namespace OSItemIndex.API.Controllers
 {
@@ -13,7 +14,6 @@ namespace OSItemIndex.API.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IItemsService _service;
-        internal static DateTime lastUpsert; 
 
         public ItemsController(IItemsService itemsService, OSItemIndexDbContext context)
         {
@@ -37,15 +37,14 @@ namespace OSItemIndex.API.Controllers
         [RequestSizeLimit(int.MaxValue)]
         public async Task<IActionResult> PostItem(IEnumerable<OSRSBoxItem> items)
         {
-            lastUpsert = DateTime.Now;
             return Ok(await _service.UpsertAndCommitItemsAsync(items));
         }
 
-/*        [HttpGet] // GET: api/items/stats
+        [HttpGet] // GET: api/items/stats
         [Route("stats")]
         public async Task<IActionResult> GetStatistics()
         {
-            return Ok(lastUpsert.ToString());
-        }*/
+            return Ok(await _service.GetStatisicsAsync());
+        }
     }
 }

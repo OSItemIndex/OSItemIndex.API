@@ -23,8 +23,5 @@ namespace OSItemIndex.API.Repositories
         Task<IEnumerable<OSRSBoxItem>> UpsertAllAsync(IEnumerable<OSRSBoxItem> items);
 
         Task<int> CommitAsync();
-
-
-
     }
 }
