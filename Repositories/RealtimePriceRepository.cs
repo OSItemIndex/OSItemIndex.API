@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace OSItemIndex.API.Repositories
 {
-    public class WikiRealtimePriceRepository : IPricesRepository<WikiRealtimePrice>
+    public class RealtimePriceRepository : IPricesRepository<RealtimePrice>
     {
         private readonly OSItemIndexDbContext _context;
 
-        public WikiRealtimePriceRepository(OSItemIndexDbContext context)
+        public RealtimePriceRepository(OSItemIndexDbContext context)
         {
             _context = context;
         }
 
-        public Task<WikiRealtimePrice> GetAsync(object id)
+        public Task<RealtimePrice> GetAsync(object id)
         {
-            return _context.WikiRealtimePrices.FindAsync(id).AsTask();
+            return _context.PricesRealtime.FindAsync(id).AsTask();
         }
 
-        public async Task<IEnumerable<WikiRealtimePrice>> GetAllAsync()
+        public async Task<IEnumerable<RealtimePrice>> GetAllAsync()
         {
-            return await _context.WikiRealtimePrices.ToListAsync();
+            return await _context.PricesRealtime.ToListAsync();
         }
 
-        public async Task<IEnumerable<WikiRealtimePrice>> GetAllAsync(Expression<Func<WikiRealtimePrice, bool>> filter = null, Func<IQueryable<WikiRealtimePrice>, IOrderedQueryable<WikiRealtimePrice>> orderBy = null, string includeProperties = "")
+        public async Task<IEnumerable<RealtimePrice>> GetAllAsync(Expression<Func<RealtimePrice, bool>> filter = null, Func<IQueryable<RealtimePrice>, IOrderedQueryable<RealtimePrice>> orderBy = null, string includeProperties = "")
         {
-            IQueryable<WikiRealtimePrice> query = _context.WikiRealtimePrices;
+            IQueryable<RealtimePrice> query = _context.PricesRealtime;
 
             if (filter != null)
             {
@@ -55,14 +55,14 @@ namespace OSItemIndex.API.Repositories
             }
         }
 
-        public Task<WikiRealtimePrice> UpsertAsync(WikiRealtimePrice item)
+        public Task<RealtimePrice> UpsertAsync(RealtimePrice item)
         {
-            return _context.WikiRealtimePrices.UpsertAsync(item, matchPredicate: m => m.Id == item.Id);
+            return _context.PricesRealtime.UpsertAsync(item, matchPredicate: m => m.Id == item.Id);
         }
 
-        public Task<IEnumerable<WikiRealtimePrice>> UpsertAllAsync(IEnumerable<WikiRealtimePrice> items)
+        public Task<IEnumerable<RealtimePrice>> UpsertAllAsync(IEnumerable<RealtimePrice> items)
         {
-            return _context.WikiRealtimePrices.UpsertRangeAsync(items, matchPredicate: (a, b) => a.Id == b.Id);
+            return _context.PricesRealtime.UpsertRangeAsync(items, matchPredicate: (a, b) => a.Id == b.Id);
         }
 
         public Task<int> CommitAsync()

@@ -5,12 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace OSItemIndex.API.Models
 {
-    public class WikiRealtimePrice : PriceIdentity
+    public class RealtimePrice : PriceIdentity
     {
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         [Column(TypeName = "json")]
         [JsonPropertyName("latest")]
         public LatestPrice Latest { get; set; }
@@ -18,7 +17,6 @@ namespace OSItemIndex.API.Models
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         [Column(TypeName = "json")]
         [JsonPropertyName("5m")]
         public AveragePrice FiveMinute { get; set; }
@@ -26,13 +24,11 @@ namespace OSItemIndex.API.Models
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         [Column(TypeName = "json")]
         [JsonPropertyName("1h")]
         public AveragePrice OneHour { get; set; }
 
-        //[NotMapped]
-        public class LatestPrice : IWikiRealtimePricingModel
+        public class LatestPrice : IRealtimePriceModel
         {
             /// <summary>
             /// Unique OSRS item ID number.
@@ -70,8 +66,7 @@ namespace OSItemIndex.API.Models
             public long? LowTime { get; set; }
         }
 
-        //[NotMapped]
-        public class AveragePrice : IWikiRealtimePricingModel
+        public class AveragePrice : IRealtimePriceModel
         {
             /// <summary>
             /// Unique OSRS item ID number.
