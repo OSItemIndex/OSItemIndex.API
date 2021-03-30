@@ -11,9 +11,13 @@
  * General notes:
  *      Using a factory pattern instead of sharing a DbContext between our services injected by DI gives us the benefit of concurrency/thread-safety,
  *          better performance, and memory management assuming we use it properly. We inject DbContextHelper into each service that requires access to our DbContext
- *          with DI, use GetFactory to access the factory and create a new DbContext instance using the scope factory, 
+ *          with DI, use GetFactory to access the factory which creates a new underlying DbContext instance using the scope factory, 
  *          and GetDbContext to access that context. When we no longer need to use our DbContext, we dispose of our DbContextFactory instance created 
- *          by the injected DbContextHelper instance, which also disposes the underlying DbContext.
+ *          by the injected DbContextHelper instance, which also disposes the underlying DbContext. With the help of a DbContextPool this gives us a ton of benefits
+ *          as an API making multiple queries to our DbContext.
+ *          
+ * Potential improvements:
+ *      Making use of generics so this code can be easily-re-usable and testable
  */
 
 using Microsoft.EntityFrameworkCore;
