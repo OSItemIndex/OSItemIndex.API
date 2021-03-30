@@ -37,14 +37,7 @@ namespace OSItemIndex.API.Controllers
         [RequestSizeLimit(int.MaxValue)]
         public async Task<IActionResult> PostItem(IEnumerable<OSRSBoxItem> items)
         {
-            return Ok(await _service.UpsertAndCommitItemsAsync(items));
-        }
-
-        [HttpGet] // GET: api/items/stats
-        [Route("stats")]
-        public async Task<IActionResult> GetStatistics()
-        {
-            return Ok(await _service.GetStatisicsAsync());
+            return Ok(await _itemsService.UpsertAndCommitItemsAsync(items));
         }
     }
 }
