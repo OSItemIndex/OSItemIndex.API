@@ -44,6 +44,7 @@ namespace OSItemIndex.API
 
             services.AddEntityFrameworkContext(Configuration);
 
+            services.AddHealthCheckServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +53,7 @@ namespace OSItemIndex.API
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"));
 
+            app.UseHealthCheckOptions();
 
             app.UseRouting();
 
