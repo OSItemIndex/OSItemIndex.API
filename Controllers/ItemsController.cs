@@ -9,31 +9,31 @@ using Serilog;
 
 namespace OSItemIndex.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly IItemsService _service;
+        private readonly IItemsService _itemsService;
 
-        public ItemsController(IItemsService itemsService, OSItemIndexDbContext context)
+        public ItemsController(IItemsService itemsService)
         {
-            _service = itemsService;
+            _itemsService = itemsService;
         }
 
-        [HttpGet] // GET: api/items
+        [HttpGet] // GET: items
         public async Task<ActionResult<IEnumerable<OSRSBoxItem>>> GetItems()
         {
-            return Ok(await _service.GetItemsAsync());
+            return Ok(await _itemsService.GetItemsAsync());
         }
 
-        [HttpGet] // GET: api/items/{id}
+        [HttpGet] // GET: items/{id}
         [Route("{id:int}")]
         public async Task<ActionResult<OSRSBoxItem>> GetItem(int id)
         {
-            return Ok(await _service.GetItemAsync(id));
+            return Ok(await _itemsService.GetItemAsync(id));
         }
 
-        [HttpPost] // POST: api/items
+        [HttpPost] // POST: items
         [RequestSizeLimit(int.MaxValue)]
         public async Task<IActionResult> PostItem(IEnumerable<OSRSBoxItem> items)
         {
