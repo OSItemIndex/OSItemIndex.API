@@ -2,6 +2,7 @@ using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace OSItemIndex.API
 {
@@ -9,28 +10,35 @@ namespace OSItemIndex.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            BuildHost(args).Run();
             Log.CloseAndFlush();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHost BuildHost(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
 
-                .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureLogging(builder =>
                 {
-                    webBuilder.UseStartup<Startup>();
-                })
+                    builder.ClearProviders();
 
-                .ConfigureLogging(logging =>
-                {
                     Log.Logger = new LoggerConfiguration()
                         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                         .Enrich.FromLogContext()
                         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}") // {Properties:j}
                         .CreateLogger();
 
-                    logging.AddSerilog(Log.Logger, dispose: true);
-                });
+                    builder.AddSerilog(Log.Logger, dispose: true);
+                })
+                
+                .UseSerilog()
+
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+
+                .Build();
+        }
     }
 }

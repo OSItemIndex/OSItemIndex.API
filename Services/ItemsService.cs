@@ -9,35 +9,37 @@ namespace OSItemIndex.API.Services
 {
     public class ItemsService : IItemsService
     {
-        private readonly IItemsRepository _repo;
+        private readonly IItemsRepository _itemsRepository;
 
         public ItemsService(IItemsRepository itemsRepository)
         {
-            _repo = itemsRepository;
+            _itemsRepository = itemsRepository;
         }
 
         public Task<OSRSBoxItem> GetItemAsync(int ID)
         {
-            return _repo.GetAsync(ID);
+            return _itemsRepository.GetAsync(ID);
         }
 
         public Task<IEnumerable<OSRSBoxItem>> GetItemsAsync()
         {
-            return _repo.GetAllAsync(orderBy: o => o.OrderBy(item => item.Id));
+            return _itemsRepository.GetAllAsync(orderBy: o => o.OrderBy(item => item.Id));
         }
 
-        public async Task<ItemsStatisics> GetStatisicsAsync()
+        public Task<int> CountItemsAsync()
         {
-            return new ItemsStatisics()
-            {
-                TotalItemRecords = await _repo.CountAsync()
-            };
+            return _itemsRepository.CountAsync();
+        }
+
+        public Task<int> CountItemsWithNamesAsync()
+        {
+            return _itemsRepository.CountAsync(item => item.Name != null);
         }
 
         public async Task<int> UpsertAndCommitItemsAsync(IEnumerable<OSRSBoxItem> items)
         {
-            await _repo.UpsertAllAsync(items);
-            return await _repo.CommitAsync();
+            await _itemsRepository.UpsertAllAsync(items);
+            return await _itemsRepository.CommitAsync();
         }
     }
 }

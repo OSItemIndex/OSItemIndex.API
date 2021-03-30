@@ -1,15 +1,12 @@
-using System;
-using System.IO;
-using OSItemIndex.API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using OSItemIndex.API.Repositories;
-using OSItemIndex.API.Models;
-using OSItemIndex.API.Services;
+using OSItemIndex.API.HealthChecks;
+using System;
+using System.IO;
 
 namespace OSItemIndex.API
 {
@@ -17,48 +14,57 @@ namespace OSItemIndex.API
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", false, true);
+
+            if (env.EnvironmentName == "Development")
+            {
+                builder.AddJsonFile("appsettings.dev.json", true, true);
+            }
+
+            builder.AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddApplicationServices();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OSItemIndex.API", Version = "v1" });
                 var filePath = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.API.xml");
                 c.IncludeXmlComments(filePath);
             });
-            services.AddSwaggerGenNewtonsoftSupport();
 
-            services.AddEntityFrameworkDatabases(Configuration);
+            services.AddEntityFrameworkContext(Configuration);
 
-            services.AddTransient<IItemsRepository, ItemsRepository>();
-            services.AddTransient<IItemsService, ItemsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"));
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"));
+
+
+            app.UseRouting();
 
             app.UseHttpsRedirection();
-            app.UseRouting();
+
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.InitializeDatabases(); // use our DbExtensions to initialize the db
+            app.InitializeDatabases();
         }
     }
 }

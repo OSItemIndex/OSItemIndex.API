@@ -10,11 +10,12 @@ namespace OSItemIndex.API
     public class OSItemIndexDbContext : DbContext
     {
         public DbSet<OSRSBoxItem> Items { get; set; }
-        public DbSet<WikiRealtimePrice> WikiRealtimePrices { get; set; }
+        public DbSet<RealtimePrice> PricesRealtime { get; set; }
 
-        public OSItemIndexDbContext(DbContextOptions<OSItemIndexDbContext> options) : base(options)
+        public OSItemIndexDbContext(DbContextOptions<OSItemIndexDbContext> options)
+            : base(options)
         {
-
+            
         }
     }
 }

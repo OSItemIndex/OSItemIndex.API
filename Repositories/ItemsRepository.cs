@@ -10,21 +10,31 @@ namespace OSItemIndex.API.Repositories
 {
     public class ItemsRepository : IItemsRepository
     {
-        private readonly OSItemIndexDbContext _context;
+        private readonly IDbContextHelper _dbContextHelper;
 
-        public ItemsRepository(OSItemIndexDbContext context)
+        public ItemsRepository(IDbContextHelper dbContextHelper)
         {
-            _context = context;
+            _dbContextHelper = dbContextHelper;
         }
 
-        public Task<OSRSBoxItem> GetAsync(object id)
+        public async Task<OSRSBoxItem> GetAsync(object id)
         {
-            return _context.Items.FindAsync(id).AsTask();
+            using (var factory = _dbContextHelper.GetFactory())
+            {
+                var dbContext = factory.GetDbContext();
+
+                return await dbContext.Items.FindAsync(id).AsTask();
+            }
         }
 
         public async Task<IEnumerable<OSRSBoxItem>> GetAllAsync()
         {
-            return await _context.Items.ToListAsync();
+            using (var factory = _dbContextHelper.GetFactory())
+            {
+                var dbContext = factory.GetDbContext();
+
+                return await dbContext.Items.ToListAsync();
+            }
         }
 
         public async Task<IEnumerable<OSRSBoxItem>> GetAllAsync(
@@ -32,50 +42,85 @@ namespace OSItemIndex.API.Repositories
             Func<IQueryable<OSRSBoxItem>, IOrderedQueryable<OSRSBoxItem>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<OSRSBoxItem> query = _context.Items;
-
-            if (filter != null)
+            using (var factory = _dbContextHelper.GetFactory())
             {
-                query = query.Where(filter);
-            }
+                var dbContext = factory.GetDbContext();
 
-            if (includeProperties != null)
-            {
-                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                IQueryable<OSRSBoxItem> query = dbContext.Items;
+
+                if (filter != null)
                 {
-                    query = query.Include(includeProperty);
+                    query = query.Where(filter);
                 }
-            }
+
+                if (includeProperties != null)
+                {
+                    foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        query = query.Include(includeProperty);
+                    }
+                }
 
 
-            if (orderBy != null)
+                if (orderBy != null)
+                {
+                    return await orderBy(query).ToListAsync();
+                }
+                else
+                {
+                    return await query.ToListAsync();
+                }
+            }           
+        }
+
+        public async Task<int> CountAsync()
+        {
+            using (var factory = _dbContextHelper.GetFactory())
             {
-                return await orderBy(query).ToListAsync();
+                var dbContext = factory.GetDbContext();
+
+                return await dbContext.Items.CountAsync();
             }
-            else
+        }
+
+        public async Task<int> CountAsync(Expression<Func<OSRSBoxItem, bool>> predicate)
+        {
+            using (var factory = _dbContextHelper.GetFactory())
             {
-                return await query.ToListAsync();
+                var dbContext = factory.GetDbContext();
+
+                return await dbContext.Items.CountAsync(predicate);
             }
         }
 
-        public Task<int> CountAsync()
+        public async Task<OSRSBoxItem> UpsertAsync(OSRSBoxItem item)
         {
-            return _context.Items.CountAsync();
+            using (var factory = _dbContextHelper.GetFactory())
+            {
+                var dbContext = factory.GetDbContext();
+
+                return await dbContext.Items.UpsertAsync(item, matchPredicate: m => m.Id == item.Id);
+            }
         }
 
-        public Task<OSRSBoxItem> UpsertAsync(OSRSBoxItem item)
+        public async Task<IEnumerable<OSRSBoxItem>> UpsertAllAsync(IEnumerable<OSRSBoxItem> items)
         {
-            return _context.Items.UpsertAsync(item, matchPredicate: m => m.Id == item.Id);
+            using (var factory = _dbContextHelper.GetFactory())
+            {
+                var dbContext = factory.GetDbContext();
+
+                return await dbContext.Items.UpsertRangeAsync(items, matchPredicate: (a, b) => a.Id == b.Id);
+            }
         }
 
-        public Task<IEnumerable<OSRSBoxItem>> UpsertAllAsync(IEnumerable<OSRSBoxItem> items)
+        public async Task<int> CommitAsync()
         {
-            return _context.Items.UpsertRangeAsync(items, matchPredicate: (a, b) => a.Id == b.Id);
-        }
+            using (var factory = _dbContextHelper.GetFactory())
+            {
+                var dbContext = factory.GetDbContext();
 
-        public Task<int> CommitAsync()
-        {
-            return _context.SaveChangesAsync();
+                return await dbContext.SaveChangesAsync();
+            }
         }
     }
 }

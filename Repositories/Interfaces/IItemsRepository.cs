@@ -18,6 +18,7 @@ namespace OSItemIndex.API.Repositories
             string includeProperties = "");
 
         Task<int> CountAsync();
+        Task<int> CountAsync(Expression<Func<OSRSBoxItem, bool>> predicate);
 
         Task<OSRSBoxItem> UpsertAsync(OSRSBoxItem item);
         Task<IEnumerable<OSRSBoxItem>> UpsertAllAsync(IEnumerable<OSRSBoxItem> items);

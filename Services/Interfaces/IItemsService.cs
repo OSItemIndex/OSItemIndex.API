@@ -20,6 +20,8 @@ namespace OSItemIndex.API.Services
         /// <returns>Ascending ordered enumerable by OSRSBoxItem.ID</returns>
         Task<IEnumerable<OSRSBoxItem>> GetItemsAsync();
 
+        Task<int> CountItemsAsync();
+        Task<int> CountItemsWithNamesAsync();
 
         /// <summary>
         /// 
