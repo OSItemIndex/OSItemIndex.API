@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OSItemIndex.API.Models;
@@ -16,9 +15,9 @@ namespace OSItemIndex.API.Services
             _itemsRepository = itemsRepository;
         }
 
-        public Task<OSRSBoxItem> GetItemAsync(int ID)
+        public Task<OSRSBoxItem> GetItemAsync(int id)
         {
-            return _itemsRepository.GetAsync(ID);
+            return _itemsRepository.GetAsync(id);
         }
 
         public Task<IEnumerable<OSRSBoxItem>> GetItemsAsync()

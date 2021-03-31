@@ -28,9 +28,9 @@ namespace OSItemIndex.API
                         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}") // {Properties:j}
                         .CreateLogger();
 
-                    builder.AddSerilog(Log.Logger, dispose: true);
+                    builder.AddSerilog(Log.Logger, true);
                 })
-                
+
                 .UseSerilog()
 
                 .ConfigureWebHostDefaults(webBuilder =>

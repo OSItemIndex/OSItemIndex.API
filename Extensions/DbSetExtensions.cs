@@ -1,4 +1,4 @@
-﻿/**
+﻿/***
   * @author     Lampjaw
   * @date       6-28-2019
   * @github     https://github.com/voidwell/Voidwell.DaybreakGames/blob/master/src/Voidwell.DaybreakGames.Data/DbSetExtensions.cs
@@ -86,7 +86,7 @@ namespace OSItemIndex.API
         {
             foreach (var fromProp in typeof(T).GetProperties())
             {
-                var toProp = typeof(T).GetProperty(fromProp.Name); // retrive the actual prop
+                var toProp = typeof(T).GetProperty(fromProp.Name); // retrieve the actual prop
                 var toValue = toProp.GetValue(source, null); // retrieve default(?) value from entity prop
                 if (toValue != null)
                 {

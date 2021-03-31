@@ -1,10 +1,10 @@
-﻿/**
+﻿/***
   * @author     Lampjaw
   * @date       6-9-2019
   * @github     https://github.com/voidwell/Voidwell.DaybreakGames/blob/master/src/Voidwell.DaybreakGames.Data/DesignTimeDbContextFactory.cs
 */
 
-/** Original author: https://github.com/Lampjaw
+/*** Original author: https://github.com/Lampjaw
  * Modified by https://github.com/Twinki14 for OSItemIndex
  * DesignTimeDbContextFactory: Implementation that design-time services will use to create new instances of our db context
  *      when it requires it, such as for migrations, other libraries, or a context factory

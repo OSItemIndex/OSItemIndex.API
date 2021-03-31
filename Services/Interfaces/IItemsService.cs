@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using OSItemIndex.API.Models;
 
@@ -11,8 +9,8 @@ namespace OSItemIndex.API.Services
         /// <summary>
         ///     Retrieves an item by ID from the repository.
         /// </summary>
-        /// <param name="ID">An OSRS-item ID.</param>
-        Task<OSRSBoxItem> GetItemAsync(int ID);
+        /// <param name="id">An OSRS-item ID.</param>
+        Task<OSRSBoxItem> GetItemAsync(int id);
 
         /// <summary>
         ///     Retrieves a collection of all items in the repository, and orders them ascendingly by their respective ID.
@@ -24,7 +22,7 @@ namespace OSItemIndex.API.Services
         Task<int> CountItemsWithNamesAsync();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         Task<int> UpsertAndCommitItemsAsync(IEnumerable<OSRSBoxItem> items);

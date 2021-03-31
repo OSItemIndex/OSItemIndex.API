@@ -38,7 +38,7 @@ namespace OSItemIndex.API.Repositories
         }
 
         public async Task<IEnumerable<OSRSBoxItem>> GetAllAsync(
-            Expression<Func<OSRSBoxItem, bool>> filter = null,
+            Expression<Func<OSRSBoxItem, bool>> filter,
             Func<IQueryable<OSRSBoxItem>, IOrderedQueryable<OSRSBoxItem>> orderBy = null,
             string includeProperties = "")
         {
@@ -70,7 +70,7 @@ namespace OSItemIndex.API.Repositories
                 {
                     return await query.ToListAsync();
                 }
-            }           
+            }
         }
 
         public async Task<int> CountAsync()
@@ -99,7 +99,7 @@ namespace OSItemIndex.API.Repositories
             {
                 var dbContext = factory.GetDbContext();
 
-                return await dbContext.Items.UpsertAsync(item, matchPredicate: m => m.Id == item.Id);
+                return await dbContext.Items.UpsertAsync(item, m => m.Id == item.Id);
             }
         }
 
@@ -109,7 +109,7 @@ namespace OSItemIndex.API.Repositories
             {
                 var dbContext = factory.GetDbContext();
 
-                return await dbContext.Items.UpsertRangeAsync(items, matchPredicate: (a, b) => a.Id == b.Id);
+                return await dbContext.Items.UpsertRangeAsync(items, (a, b) => a.Id == b.Id);
             }
         }
 

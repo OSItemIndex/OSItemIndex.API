@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OSItemIndex.API.Models;
 using OSItemIndex.API.Services;
-using Serilog;
 
 namespace OSItemIndex.API.Controllers
 {
