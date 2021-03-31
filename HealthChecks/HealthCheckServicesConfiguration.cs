@@ -12,9 +12,8 @@ namespace OSItemIndex.API.HealthChecks
         public static IServiceCollection AddHealthCheckServices(this IServiceCollection services)
         {
             services.AddHealthChecks()
-                //.AddDbContextCheck<OSItemIndexDbContext>()
-                .AddCheck<ItemsIntegrityHealthCheck>("ItemsIntegrityHealthCheck")
-                .AddCheck<DbContextCheck>("DbContextCheck");
+                    .AddCheck<OSItemIndexDbCheck>("DatabaseConnection")
+                    .AddCheck<ItemsIntegrityCheck>("ItemsIntegrity");
             return services;
         }
 
@@ -35,13 +34,16 @@ namespace OSItemIndex.API.HealthChecks
                             Component = x.Key,
                             Status = x.Value.Status.ToString(),
                             Description = x.Value.Description,
-                            Exception = (x.Value.Exception != null) ? x.Value.Exception.ToString() : null,
-                            Data = x.Value.Data
+                            Exception = x.Value.Exception?.ToString(),
+                            Data = x.Value.Data.Count > 0 ? x.Value.Data : null
                         }),
                         Duration = report.TotalDuration
                     };
 
-                    await context.Response.WriteAsync(JsonSerializer.Serialize(response, options: new JsonSerializerOptions { IgnoreNullValues = true}));
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(
+                                                                               response,
+                                                                               new JsonSerializerOptions
+                                                                                   {IgnoreNullValues = true}));
                 },
             });
             return app;
