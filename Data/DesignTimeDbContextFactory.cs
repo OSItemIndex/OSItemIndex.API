@@ -10,13 +10,13 @@
  *      when it requires it, such as for migrations, other libraries, or a context factory
  */
 
+using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
 
-namespace OSItemIndex.API
+namespace OSItemIndex.API.Data
 {
     /// <summary>
     ///     IDesignTimeDbContextFactory implemention that's used by design-time services.

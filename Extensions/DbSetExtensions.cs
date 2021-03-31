@@ -4,14 +4,14 @@
   * @github     https://github.com/voidwell/Voidwell.DaybreakGames/blob/master/src/Voidwell.DaybreakGames.Data/DbSetExtensions.cs
 */
 
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace OSItemIndex.API
+namespace OSItemIndex.API.Extensions
 {
     public static class DbSetExtensions
     {

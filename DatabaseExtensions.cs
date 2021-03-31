@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using OSItemIndex.API.Repositories;
 using Serilog;
 using System;
+using OSItemIndex.API.Data;
+using OSItemIndex.API.Models;
 
 namespace OSItemIndex.API
 {
@@ -21,7 +23,7 @@ namespace OSItemIndex.API
                 builder.UseNpgsql(options.DbConnectionString), options.PoolSize);
 
             services.AddSingleton<IDbContextHelper, DbContextHelper>();
-            services.AddSingleton<IItemsRepository, ItemsRepository>();
+            services.AddSingleton<IEntityRepository<OSRSBoxItem>, ItemsEntityRepository>();
 
             return services;
         }

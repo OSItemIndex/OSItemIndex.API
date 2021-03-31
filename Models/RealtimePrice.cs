@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace OSItemIndex.API.Models
 {
-    public class RealtimePrice : PriceIdentity
+    public class RealtimePrice : PriceEntity
     {
         /// <summary>
         /// 

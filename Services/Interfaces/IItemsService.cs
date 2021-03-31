@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using OSItemIndex.API.Models;
 
 namespace OSItemIndex.API.Services
@@ -19,7 +19,6 @@ namespace OSItemIndex.API.Services
         Task<IEnumerable<OSRSBoxItem>> GetItemsAsync();
 
         Task<int> CountItemsAsync();
-        Task<int> CountItemsWithNamesAsync();
 
         /// <summary>
         ///

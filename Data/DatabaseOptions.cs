@@ -1,4 +1,4 @@
-﻿namespace OSItemIndex.API
+﻿namespace OSItemIndex.API.Data
 {
     public class DatabaseOptions
     {

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace OSItemIndex.API.Models
 {
-    public class ItemIdentity
+    public class ItemEntity
     {
         /// <summary>
         /// Unique OSRS item ID number.

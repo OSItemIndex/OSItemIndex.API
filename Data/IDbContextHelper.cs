@@ -1,6 +1,6 @@
-﻿using static OSItemIndex.API.DbContextHelper;
+﻿using static OSItemIndex.API.Data.DbContextHelper;
 
-namespace OSItemIndex.API
+namespace OSItemIndex.API.Data
 {
     public interface IDbContextHelper
     {

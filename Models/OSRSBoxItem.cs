@@ -2,10 +2,11 @@
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OSItemIndex.API.Models
 {
-    public class OSRSBoxItem : ItemIdentity
+    public class OSRSBoxItem : ItemEntity
     {
         /// <summary>
         /// If the item is a duplicate.
@@ -52,7 +53,7 @@ namespace OSItemIndex.API.Models
         /// <summary>
         /// OSRSBox item document.
         /// </summary>
-        //[Required]
+        [Required]
         [Column(TypeName = "json")]
         [JsonPropertyName("document")]
         public string Document { get; set; }

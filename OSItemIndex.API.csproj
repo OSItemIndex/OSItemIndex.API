@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Remove="OSItemIndex.API.csproj.DotSettings" />
   </ItemGroup>
 
   <ItemGroup>

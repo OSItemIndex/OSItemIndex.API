@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace OSItemIndex.API.Models
 {
-    public class WeirdGloopPrice : PriceIdentity
+    public class WeirdGloopPrice : PriceEntity
     {
         /// <summary>
         /// The price of the item.
