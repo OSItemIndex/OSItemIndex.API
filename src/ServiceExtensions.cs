@@ -10,7 +10,7 @@ namespace OSItemIndex.API
             services.AddControllers();
 
             services.AddSingleton<IItemsService, ItemsService>();
-            //services.AddSingleton<IPricesService, PricesService>();
+            services.AddSingleton<IRealtimePricesService, RealtimePricesService>();
 
             return services;
         }

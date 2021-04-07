@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OSItemIndex.API.Data;
 using OSItemIndex.API.Extensions;
 using OSItemIndex.API.Models;
+using Serilog;
 
 namespace OSItemIndex.API.Repositories
 {
@@ -100,8 +101,10 @@ namespace OSItemIndex.API.Repositories
             using (var factory = _dbContextHelper.GetFactory())
             {
                 var dbContext = factory.GetDbContext();
-
-                return await dbContext.Set<T>().UpsertRangeAsync(entities, (a, b) => a.Id == b.Id);
+                var dbSet = dbContext.Set<T>();
+                var result = await dbSet.UpsertRangeAsync(entities, (a, b) => a.Id == b.Id);
+                await dbContext.SaveChangesAsync();
+                return result;
             }
         }
 
@@ -112,6 +115,11 @@ namespace OSItemIndex.API.Repositories
                 var dbContext = factory.GetDbContext();
                 return await dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<int> CommitAsync(DbContext context)
+        {
+            return await context.SaveChangesAsync();
         }
     }
 }

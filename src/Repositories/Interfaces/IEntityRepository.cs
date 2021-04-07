@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OSItemIndex.API.Models;
 
 namespace OSItemIndex.API.Repositories
@@ -24,5 +25,6 @@ namespace OSItemIndex.API.Repositories
         Task<IEnumerable<T>> UpsertRangeAsync(IEnumerable<T> entities);
 
         Task<int> CommitAsync();
+        Task<int> CommitAsync(DbContext context);
     }
 }

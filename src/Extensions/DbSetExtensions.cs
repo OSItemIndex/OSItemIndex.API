@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace OSItemIndex.API.Extensions
 {
@@ -17,7 +18,7 @@ namespace OSItemIndex.API.Extensions
     {
         public static async Task<TEntity> UpsertAsync<TEntity>(this DbSet<TEntity> dbSet, TEntity entity, Expression<Func<TEntity, bool>> matchPredicate, bool ignoreNullProperties = false) where TEntity : class
         {
-            var storeEntity = await (matchPredicate != null ? dbSet.Where(matchPredicate) : dbSet).AsNoTracking().FirstOrDefaultAsync();
+            var storeEntity = await (matchPredicate != null ? dbSet.Where(matchPredicate) : dbSet).FirstOrDefaultAsync();
 
             if (storeEntity == null)
             {
@@ -37,11 +38,11 @@ namespace OSItemIndex.API.Extensions
         }
 
         public static async Task<IEnumerable<TEntity>> UpsertRangeAsync<TEntity>(this DbSet<TEntity> dbSet, IEnumerable<TEntity> entities, Expression<Func<TEntity, bool>> searchPredicate, Func<TEntity, TEntity, bool> matchPredicate, bool ignoreNullProperties = false) where TEntity : class
-        {          
+        {
             var result = new List<TEntity>();
             var createdEntities = new List<TEntity>();
 
-            var storedEntities = await (searchPredicate != null ? dbSet.Where(searchPredicate) : dbSet).AsNoTracking().ToListAsync();
+            var storedEntities = await (searchPredicate != null ? dbSet.Where(searchPredicate) : dbSet).ToListAsync();
 
             foreach (var entity in entities)
             {

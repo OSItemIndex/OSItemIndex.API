@@ -24,6 +24,7 @@ namespace OSItemIndex.API
 
             services.AddSingleton<IDbContextHelper, DbContextHelper>();
             services.AddSingleton<IEntityRepository<OSRSBoxItem>, ItemsEntityRepository>();
+            services.AddSingleton<IEntityRepository<RealtimePrice>, RealtimePriceEntityRepository>();
 
             return services;
         }
@@ -34,8 +35,12 @@ namespace OSItemIndex.API
             {
                 try
                 {
-                    var context = scope.ServiceProvider.GetRequiredService<OSItemIndexDbContext>();
-                    context.Database.EnsureCreated(); // TODO ~ Look into migrations
+                    var dbContextHelper = scope.ServiceProvider.GetRequiredService<IDbContextHelper>();
+                    using (var factory = dbContextHelper.GetFactory())
+                    {
+                        var context = factory.GetDbContext();
+                        context.Database.EnsureCreated(); // TODO ~ Look into migrations
+                    }
                 }
                 catch (Exception ex)
                 {

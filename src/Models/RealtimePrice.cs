@@ -8,58 +8,51 @@ namespace OSItemIndex.API.Models
     public class RealtimePrice : PriceEntity
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Column(TypeName = "json")]
         [JsonPropertyName("latest")]
-        public LatestPrice Latest { get; set; }
+        public LatestPrice? Latest { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Column(TypeName = "json")]
         [JsonPropertyName("5m")]
-        public AveragePrice FiveMinute { get; set; }
+        public AveragePrice? FiveMinute { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Column(TypeName = "json")]
         [JsonPropertyName("1h")]
-        public AveragePrice OneHour { get; set; }
+        public AveragePrice? OneHour { get; set; }
 
         public class LatestPrice : IRealtimePriceModel
         {
             /// <summary>
-            /// Unique OSRS item ID number.
-            /// </summary>
-            [NotMapped] // ignored by efcore
-            [JsonPropertyName("id")]
-            public int? Id { get; set; }
-
-            /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("high")]
             public int? High { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("highTime")]
             public long? HighTime { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("low")]
             public int? Low { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("lowTime")]
@@ -69,42 +62,35 @@ namespace OSItemIndex.API.Models
         public class AveragePrice : IRealtimePriceModel
         {
             /// <summary>
-            /// Unique OSRS item ID number.
-            /// </summary>
-            [NotMapped] // ignored by efcore
-            [JsonPropertyName("id")]
-            public int? Id { get; set; }
-
-            /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("avgHighPrice")]
             public int? AverageHighPrice { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("highPriceVolume")]
             public int? HighPriceVolume { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("avgLowPrice")]
             public int? AverageLowPrice { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("lowPriceVolume")]
             public int? LowPriceVolume { get; set; }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             [Required]
             [JsonPropertyName("timestamp")]

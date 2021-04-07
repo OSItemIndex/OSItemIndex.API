@@ -7,6 +7,6 @@ namespace OSItemIndex.API.Models
 {
     public interface IRealtimePriceModel
     {
-        int? Id { get; set; }
+        //int? Id { get; set; }
     }
 }

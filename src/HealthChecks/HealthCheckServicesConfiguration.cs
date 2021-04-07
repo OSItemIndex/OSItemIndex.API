@@ -44,7 +44,7 @@ namespace OSItemIndex.API.HealthChecks
                                                                                response,
                                                                                new JsonSerializerOptions
                                                                                    {IgnoreNullValues = true}));
-                },
+                }
             });
             return app;
         }
