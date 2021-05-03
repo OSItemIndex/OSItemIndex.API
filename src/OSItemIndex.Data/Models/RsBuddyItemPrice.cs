@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace OsItemIndex.Data
+namespace OSItemIndex.Data
 {
-    public class RsBuddyPrice : PriceEntity
+    public class RsBuddyItemPrice : PriceEntity
     {
         /// <summary>
         /// Store price.

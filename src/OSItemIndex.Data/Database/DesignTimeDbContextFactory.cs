@@ -15,8 +15,9 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using OSItemIndex.Data.Extensions;
 
-namespace OsItemIndex.Data.Database
+namespace OSItemIndex.Data.Database
 {
     /// <summary>
     ///     IDesignTimeDbContextFactory implementation that's used by design-time services.
@@ -31,18 +32,18 @@ namespace OsItemIndex.Data.Database
         public OsItemIndexDbContext CreateDbContext(string[] args) // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.1#evcp
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-            var configuration = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder() // TODO Consider consting this somewhere, keep it all in once place, honestly prob not
                                 .SetBasePath(Directory.GetCurrentDirectory())
                                 .AddJsonFile("appsettings.json", true, true)
                                 .AddJsonFile($"appsettings.{environment}.json", true)
+                                .AddKeyPerFile("/run/secrets", true) // docker secrets dir
                                 .AddEnvironmentVariables()
                                 .Build();
 
-            var dbOptions = configuration.Get<DbOptions>();
-            var builder = new DbContextOptionsBuilder<OsItemIndexDbContext>();
+            var connStrBuilder = DatabaseExtensions.NpgsqlConnectionStringFromConfig(configuration);
 
-            builder.UseNpgsql(dbOptions.DbConnectionString, o => o.CommandTimeout(7200));
+            var builder = new DbContextOptionsBuilder<OsItemIndexDbContext>()
+                .UseNpgsql(connStrBuilder.ConnectionString, o => o.CommandTimeout(15));
             return new OsItemIndexDbContext(builder.Options);
         }
     }

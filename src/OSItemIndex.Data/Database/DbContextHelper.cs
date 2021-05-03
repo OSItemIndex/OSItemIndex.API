@@ -24,7 +24,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace OsItemIndex.Data.Database
+namespace OSItemIndex.Data.Database
 {
     public class DbContextHelper : IDbContextHelper
     {
