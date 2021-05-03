@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OSItemIndex.API.Models;
 using OSItemIndex.API.Repositories;
 
 namespace OSItemIndex.API.Services
 {
     public class ItemsService : IItemsService
     {
-        private readonly IEntityRepository<OSRSBoxItem> _itemsEntityRepository;
+        /*private readonly IEntityRepository<OSRSBoxItem> _itemsEntityRepository;
 
         public ItemsService(IEntityRepository<OSRSBoxItem> itemsEntityRepository)
         {
@@ -34,6 +33,6 @@ namespace OSItemIndex.API.Services
         {
             await _itemsEntityRepository.UpsertRangeAsync(items);
             return await _itemsEntityRepository.CommitAsync();
-        }
+        }*/
     }
 }

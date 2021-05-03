@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using OSItemIndex.API.Models;
 
 namespace OSItemIndex.API.Services
 {
     public interface IRealtimePricesService
     {
-        /// <summary>
+        /*/// <summary>
         ///     Retrieves a realtime price model by id from the repository.
         /// </summary>
         /// <param name="id">An OSRS-item ID.</param>
@@ -24,6 +23,6 @@ namespace OSItemIndex.API.Services
         ///
         /// </summary>
         /// <returns></returns>
-        Task<int> UpsertAndCommitPricesAsync(IEnumerable<RealtimePrice> prices);
+        Task<int> UpsertAndCommitPricesAsync(IEnumerable<RealtimePrice> prices);*/
     }
 }

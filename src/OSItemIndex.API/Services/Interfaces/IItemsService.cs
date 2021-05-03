@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using OSItemIndex.API.Models;
 
 namespace OSItemIndex.API.Services
 {
     public interface IItemsService
     {
-        /// <summary>
+        /*/// <summary>
         ///     Retrieves an item by ID from the repository.
         /// </summary>
         /// <param name="id">An OSRS-item ID.</param>
@@ -24,6 +23,6 @@ namespace OSItemIndex.API.Services
         ///
         /// </summary>
         /// <returns></returns>
-        Task<int> UpsertAndCommitItemsAsync(IEnumerable<OSRSBoxItem> items);
+        Task<int> UpsertAndCommitItemsAsync(IEnumerable<OSRSBoxItem> items);*/
     }
 }

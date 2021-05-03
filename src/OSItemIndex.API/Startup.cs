@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using OSItemIndex.API.HealthChecks;
 using System;
 using System.IO;
+using OSItemIndex.API.Services;
 
 namespace OSItemIndex.API
 {
@@ -32,7 +32,9 @@ namespace OSItemIndex.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationServices();
+            services.AddControllers();
+            //services.AddSingleton<IItemsService, ItemsService>();
+            //services.AddSingleton<IRealtimePricesService, RealtimePricesService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -41,9 +43,6 @@ namespace OSItemIndex.API
                 c.IncludeXmlComments(filePath);
             });
 
-            services.AddEntityFrameworkContext(Configuration);
-
-            services.AddHealthCheckServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,20 +51,13 @@ namespace OSItemIndex.API
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"));
 
-            app.UseHealthCheckOptions();
-
             app.UseRouting();
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            app.InitializeDatabases();
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSItemIndex.API", "src\OSItemIndex.API.csproj", "{512976C7-E9D1-4B83-A70D-8D2EE39EC5A8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BC7BEC12-81AD-4CCD-8AE4-642A90555AF6}"
 ProjectSection(SolutionItems) = preProject
 	.dockerignore = .dockerignore
@@ -10,15 +8,17 @@ ProjectSection(SolutionItems) = preProject
 	Dockerfile = Dockerfile
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSItemIndex.API", "src\OSItemIndex.API\OSItemIndex.API.csproj", "{37059DD7-E108-44FC-9EFC-41BFC92F338B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{512976C7-E9D1-4B83-A70D-8D2EE39EC5A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{512976C7-E9D1-4B83-A70D-8D2EE39EC5A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{512976C7-E9D1-4B83-A70D-8D2EE39EC5A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{512976C7-E9D1-4B83-A70D-8D2EE39EC5A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
