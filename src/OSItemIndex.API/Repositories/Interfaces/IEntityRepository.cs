@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using OsItemIndex.Data;
+using OSItemIndex.Data;
 
 namespace OSItemIndex.API.Repositories
 {
@@ -14,7 +14,6 @@ namespace OSItemIndex.API.Repositories
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllAsync(
             Expression<Func<T, bool>> filter,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "");
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
     }
 }

@@ -5,36 +5,40 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
+using OSItemIndex.Data;
+using OSItemIndex.Data.Extensions;
+#pragma warning disable 1591
 
 namespace OSItemIndex.API
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
 
         public Startup(IWebHostEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", false, true);
+            var builder = new ConfigurationBuilder();
 
-            if (env.EnvironmentName == "Development")
-            {
-                builder.AddJsonFile("appsettings.dev.json", true, true);
-            }
-
+            builder.Sources.Clear();
+            builder.SetBasePath(env.ContentRootPath);
+            builder.AddJsonFile("appsettings.json", true, true);
+            builder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
+            builder.AddKeyPerFile("/run/secrets", true); // docker secrets - https://docs.microsoft.com/en-us/dotnet/core/extensions/configuration-providers#key-per-file-configuration-provider
             builder.AddEnvironmentVariables();
 
-            Configuration = builder.Build();
+            _configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddSingleton<IItemsService, ItemsService>();
-            //services.AddSingleton<IRealtimePricesService, RealtimePricesService>();
+            services.AddEntityFrameworkContext(_configuration);
+
+            services.AddSingleton<IEntityRepository<OsrsBoxItem>, ItemRepository>();
+            services.AddSingleton<IItemsService, ItemsService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -42,11 +46,10 @@ namespace OSItemIndex.API
                 var filePath = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.API.xml");
                 c.IncludeXmlComments(filePath);
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"));

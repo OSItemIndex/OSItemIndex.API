@@ -3,66 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using OsItemIndex.Data;
+using Microsoft.EntityFrameworkCore;
+using OSItemIndex.Data;
+using OSItemIndex.Data.Database;
 
 namespace OSItemIndex.API.Repositories
 {
     public abstract class EntityRepository<T> : IEntityRepository<T> where T : ItemEntity
     {
-        public EntityRepository()
-        {
+        private readonly IDbContextHelper _context;
 
+        public EntityRepository(IDbContextHelper context)
+        {
+            _context = context;
         }
 
         public async Task<T> GetAsync(int id)
         {
-            /*using (var factory = _dbContextHelper.GetFactory())
+            using (var factory = _context.GetFactory())
             {
                 var dbContext = factory.GetDbContext();
-
                 return await dbContext.Set<T>().FindAsync(id).AsTask();
-            }*/
-            return null;
+            }
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            /*using (var factory = _dbContextHelper.GetFactory())
+            using (var factory = _context.GetFactory())
             {
                 var dbContext = factory.GetDbContext();
-
-                return await dbContext.Set<T>().ToListAsync();
-            }*/
-            return null;
+                return await dbContext.Set<T>().OrderBy(entity => entity.Id).ToListAsync();
+            }
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(
-            Expression<Func<T, bool>> predicate = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "")
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
-            /*using (var factory = _dbContextHelper.GetFactory())
+            using (var factory = _context.GetFactory())
             {
                 var dbContext = factory.GetDbContext();
-
                 IQueryable<T> query = dbContext.Set<T>();
 
-                if (predicate != null)
+                if (filter != null)
                 {
-                    query = query.Where(predicate);
-                }
-
-                if (includeProperties != null)
-                {
-                    foreach (var includeProperty in includeProperties.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        query = query.Include(includeProperty);
-                    }
+                    query = query.Where(filter);
                 }
 
                 return orderBy != null ? await orderBy(query).ToListAsync() : await query.ToListAsync();
-            }*/
-            return null;
+            }
         }
     }
 }

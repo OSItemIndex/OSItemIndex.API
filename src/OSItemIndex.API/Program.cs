@@ -1,44 +1,41 @@
+using System.Threading.Tasks;
 using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog.Exceptions;
 
 namespace OSItemIndex.API
 {
-    public class Program
+    internal static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            BuildHost(args).Run();
+            Log.Logger = new LoggerConfiguration()
+                         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                         .Enrich.FromLogContext()
+                         .Enrich.WithExceptionDetails()
+                         .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                         .CreateBootstrapLogger();
+
+            var webHost = CreateWebHost(args).Build();
+            await webHost.RunAsync();
             Log.CloseAndFlush();
         }
 
-        public static IHost BuildHost(string[] args)
+        public static IHostBuilder CreateWebHost(string[] args)
         {
-            return Host.CreateDefaultBuilder(args)
-
-                .ConfigureLogging(builder =>
-                {
-                    builder.ClearProviders();
-
-                    Log.Logger = new LoggerConfiguration()
-                        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                        .Enrich.FromLogContext()
-                        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}") // {Properties:j}
-                        .CreateLogger();
-
-                    builder.AddSerilog(Log.Logger, true);
-                })
-
-                .UseSerilog()
-
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                })
-
-                .Build();
+            return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(builder =>
+            {
+                builder.UseStartup<Startup>()
+                       .UseSerilog((context, configuration) =>
+                       {
+                           configuration.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                                        .Enrich.FromLogContext()
+                                        .Enrich.WithExceptionDetails()
+                                        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"); // {Properties:j}
+                       });
+            });
         }
     }
 }
