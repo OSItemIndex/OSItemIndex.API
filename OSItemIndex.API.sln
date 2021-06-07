@@ -10,7 +10,7 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSItemIndex.API", "src\OSItemIndex.API\OSItemIndex.API.csproj", "{37059DD7-E108-44FC-9EFC-41BFC92F338B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsItemIndex.Data", "src\OSItemIndex.Data\OsItemIndex.Data.csproj", "{492D7932-3025-4310-85E1-B55BC63138FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSItemIndex.Data", "src\OSItemIndex.Data\OSItemIndex.Data.csproj", "{B36374F8-6662-4EEC-9A3B-7BD51E1E81B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,9 +22,9 @@ Global
 		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37059DD7-E108-44FC-9EFC-41BFC92F338B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{492D7932-3025-4310-85E1-B55BC63138FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{492D7932-3025-4310-85E1-B55BC63138FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{492D7932-3025-4310-85E1-B55BC63138FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{492D7932-3025-4310-85E1-B55BC63138FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B36374F8-6662-4EEC-9A3B-7BD51E1E81B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36374F8-6662-4EEC-9A3B-7BD51E1E81B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36374F8-6662-4EEC-9A3B-7BD51E1E81B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36374F8-6662-4EEC-9A3B-7BD51E1E81B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

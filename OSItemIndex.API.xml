@@ -10,7 +10,7 @@
             </summary>
             <param name="itemsService"></param>
         </member>
-        <member name="M:OSItemIndex.API.Controllers.ItemsController.GetItems(System.String,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+        <member name="M:OSItemIndex.API.Controllers.ItemsController.GetItems(OSItemIndex.API.Models.ItemQuery)">
             <summary>
             TODO
             </summary>
