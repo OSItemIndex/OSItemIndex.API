@@ -1,28 +1,40 @@
-﻿using System.Text.Json.Serialization;
-
-namespace OSItemIndex.API.Models
+﻿namespace OSItemIndex.API.Models
 {
     public class ItemQuery
     {
-        [JsonPropertyName("name")]
+        /// <summary>
+        ///
+        /// </summary>
         public string Name { get; set; }
 
-        [JsonPropertyName("looseCompare")]
+        /// <summary>
+        ///
+        /// </summary>
         public bool? LooseCompare { get; set; }
 
-        [JsonPropertyName("isDuplicate")]
-        public bool? IsDuplicate { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        public bool? Duplicate { get; set; }
 
-        [JsonPropertyName("isNoted")]
-        public bool? IsNoted { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        public bool? Noted { get; set; }
 
-        [JsonPropertyName("isPlaceholder")]
-        public bool? IsPlaceholder { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        public bool? Placeholder { get; set; }
 
-        [JsonPropertyName("isStackable")]
-        public bool? IsStackable { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        public bool? Stackable { get; set; }
 
-        [JsonPropertyName("isTradeableOnGe")]
-        public bool? IsTradeableOnGe { get; set; }
+        /// <summary>
+        ///
+        /// </summary>
+        public bool? TradeableOnGe { get; set; }
     }
 }

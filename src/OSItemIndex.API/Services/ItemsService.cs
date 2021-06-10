@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OSItemIndex.API.Models;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.Data;
 
@@ -20,23 +21,18 @@ namespace OSItemIndex.API.Services
             return await _repository.GetAsync(id);
         }
 
-        public async Task<IEnumerable<OsrsBoxItem>> GetItemsAsync()
+        public async Task<IEnumerable<OsrsBoxItem>> GetItemsAsync(ItemQuery? query = null)
         {
-            return await _repository.GetAllAsync();
-        }
-
-        public async Task<IEnumerable<OsrsBoxItem>> GetItemsAsync(string name, bool? duplicate,
-                                                                  bool? noted, bool? placeholder,
-                                                                  bool? stackable, bool? tradeableOnGe)
-        {
-            return await _repository.GetAllAsync(item =>
-                                                     (string.IsNullOrEmpty(name) || item.Name.Contains(name)) &&
-                                                     (duplicate == null || item.Duplicate == duplicate) &&
-                                                     (noted == null || item.Noted == noted) &&
-                                                     (placeholder == null || item.Placeholder == placeholder) &&
-                                                     (stackable == null || item.Stackable == stackable) &&
-                                                     (tradeableOnGe == null || item.TradeableOnGe == tradeableOnGe),
-                                                 items => items.OrderBy(item => item.Id));
+            return await (query == null
+                ? _repository.GetAllAsync()
+                : _repository.GetAllAsync(item =>
+                                              (string.IsNullOrEmpty(query.Name) || item.Name.Contains(query.Name)) &&
+                                              (query.Duplicate == null || item.Duplicate == query.Duplicate) &&
+                                              (query.Noted == null || item.Noted == query.Noted) &&
+                                              (query.Placeholder == null || item.Placeholder == query.Placeholder) &&
+                                              (query.Stackable == null || item.Stackable == query.Stackable) &&
+                                              (query.TradeableOnGe == null || item.TradeableOnGe == query.TradeableOnGe),
+                                          items => items.OrderBy(item => item.Id)));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using OSItemIndex.API.Models;
 using OSItemIndex.Data;
 
 namespace OSItemIndex.API.Services
@@ -15,21 +16,8 @@ namespace OSItemIndex.API.Services
         /// <summary>
         ///     Retrieves a list of all items in the repository, and orders them ascending by their respective ID.
         /// </summary>
-        /// <returns>Ascending ordered enumerable by OSRSBoxItem.ID</returns>
-        Task<IEnumerable<OsrsBoxItem>> GetItemsAsync();
-
-        /// <summary>
-        ///     Finds all items within the database that contains the passed string
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="duplicate"></param>
-        /// <param name="noted"></param>
-        /// <param name="placeholder"></param>
-        /// <param name="stackable"></param>
-        /// <param name="tradeableOnGe"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
-        Task<IEnumerable<OsrsBoxItem>> GetItemsAsync(string name, bool? duplicate,
-                                                     bool? noted, bool? placeholder,
-                                                     bool? stackable, bool? tradeableOnGe);
+        Task<IEnumerable<OsrsBoxItem>> GetItemsAsync(ItemQuery? query = null);
     }
 }

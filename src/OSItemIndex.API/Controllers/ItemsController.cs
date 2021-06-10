@@ -11,38 +11,24 @@ namespace OSItemIndex.API.Controllers
     {
         private readonly IItemsService _itemsService;
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="itemsService"></param>
         public ItemsController(IItemsService itemsService)
         {
             _itemsService = itemsService;
         }
 
         /// <summary>
-        /// TODO
+        ///     Returns a array of all items in the current database, with optional query filtering
         /// </summary>
-        /// <returns></returns>
         [HttpGet] // GET: items
-        public async Task<ActionResult> GetItems(ItemQuery? q = null)
+        public async Task<ActionResult> GetItems([FromQuery] ItemQuery query)
         {
-            /*var result = !Request.QueryString.HasValue
-                ? await _itemsService.GetItemsAsync()
-                : await _itemsService.GetItemsAsync(name,
-                                                    duplicate,
-                                                    noted,
-                                                    placeholder,
-                                                    stackable,
-                                                    tradeableOnGe);*/
-            return Ok(await _itemsService.GetItemsAsync());
+            return Ok(await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null));
         }
 
         /// <summary>
-        /// TODO
+        ///     Returns an item matching the specified Item ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Item ID</param>
         [HttpGet] // GET: items/{id}
         [Route("{id:int}")]
         public async Task<ActionResult> GetItem(int id)
