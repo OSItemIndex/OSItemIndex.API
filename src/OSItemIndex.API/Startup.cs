@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.ResponseCompression;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
 using OSItemIndex.Data;
@@ -35,6 +37,12 @@ namespace OSItemIndex.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+            });
             services.AddEntityFrameworkContext(_configuration);
 
             services.AddSingleton<IEntityRepository<OsrsBoxItem>, ItemRepository>();
@@ -57,6 +65,8 @@ namespace OSItemIndex.API
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseAuthorization();
+            app.UseResponseCompression();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
