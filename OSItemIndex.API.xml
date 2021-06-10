@@ -4,24 +4,51 @@
         <name>OSItemIndex.API</name>
     </assembly>
     <members>
-        <member name="M:OSItemIndex.API.Controllers.ItemsController.#ctor(OSItemIndex.API.Services.IItemsService)">
+        <member name="M:OSItemIndex.API.Controllers.ItemsController.GetItems(OSItemIndex.API.Models.ItemQuery,OSItemIndex.API.Models.ResponseOptions)">
             <summary>
-            TODO
+                Returns a array of all items in the current database, with optional query filtering
             </summary>
-            <param name="itemsService"></param>
-        </member>
-        <member name="M:OSItemIndex.API.Controllers.ItemsController.GetItems(OSItemIndex.API.Models.ItemQuery)">
-            <summary>
-            TODO
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:OSItemIndex.API.Controllers.ItemsController.GetItem(System.Int32)">
             <summary>
-            TODO
+                Returns an item matching the specified Item ID
             </summary>
-            <param name="id"></param>
-            <returns></returns>
+            <param name="id">Item ID</param>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.Name">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.LooseCompare">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.Duplicate">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.Noted">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.Placeholder">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.Stackable">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:OSItemIndex.API.Models.ItemQuery.TradeableOnGe">
+             <summary>
+            
+             </summary>
         </member>
         <member name="M:OSItemIndex.API.Services.IItemsService.GetItemAsync(System.Int32)">
             <summary>
@@ -29,22 +56,11 @@
             </summary>
             <param name="id">An OSRS-item ID.</param>
         </member>
-        <member name="M:OSItemIndex.API.Services.IItemsService.GetItemsAsync">
+        <member name="M:OSItemIndex.API.Services.IItemsService.GetItemsAsync(OSItemIndex.API.Models.ItemQuery)">
             <summary>
                 Retrieves a list of all items in the repository, and orders them ascending by their respective ID.
             </summary>
-            <returns>Ascending ordered enumerable by OSRSBoxItem.ID</returns>
-        </member>
-        <member name="M:OSItemIndex.API.Services.IItemsService.GetItemsAsync(System.String,System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
-            <summary>
-                Finds all items within the database that contains the passed string
-            </summary>
-            <param name="name"></param>
-            <param name="duplicate"></param>
-            <param name="noted"></param>
-            <param name="placeholder"></param>
-            <param name="stackable"></param>
-            <param name="tradeableOnGe"></param>
+            <param name="query"></param>
             <returns></returns>
         </member>
     </members>
