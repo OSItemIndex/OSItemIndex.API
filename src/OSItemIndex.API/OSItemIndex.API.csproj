@@ -3,10 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\Twinki\Documents\Visual Studio Projects\OSItemIndex\OSItemIndex.API\OSItemIndex.API.xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,13 +20,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="OSItemIndex.API.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OSItemIndex.Data\OsItemIndex.Data.csproj" />
   </ItemGroup>
+
+  <Target Name="ToolRestore" AfterTargets="CollectPackageReferences">
+    <Exec Command="dotnet tool restore" />
+  </Target>
+
+  <Target Name="GenerateSwagger" AfterTargets="AfterBuild">
+    <Exec Command="dotnet swagger tofile --output openapi.json $(OutputPath)$(AssemblyName).dll v1" />
+    <Exec Command="dotnet swagger tofile --serializeasv2 --output swagger.json $(OutputPath)$(AssemblyName).dll v1" />
+  </Target>
 
 </Project>

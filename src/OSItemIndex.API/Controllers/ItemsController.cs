@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OSItemIndex.API.Models;
 using OSItemIndex.API.Services;
+using OSItemIndex.Data;
 
 namespace OSItemIndex.API.Controllers
 {
@@ -20,7 +22,8 @@ namespace OSItemIndex.API.Controllers
         ///     Returns a array of all items in the current database, with optional query filtering
         /// </summary>
         [HttpGet] // GET: items
-        public async Task<ActionResult> GetItems([FromQuery] ItemQuery query)
+        [Produces("application/json")]
+        public async Task<ActionResult<IEnumerable<OsrsBoxItem>>> GetItems([FromQuery] ItemQuery query)
         {
             return Ok(await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null));
         }
@@ -31,10 +34,18 @@ namespace OSItemIndex.API.Controllers
         /// <param name="id">Item ID</param>
         [HttpGet] // GET: items/{id}
         [Route("{id:int}")]
-        public async Task<ActionResult> GetItem(int id)
+        [Produces("application/json")]
+        public async Task<ActionResult<OsrsBoxItem>> GetItem(int id)
         {
             var result = await _itemsService.GetItemAsync(id);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/version")] // GET: items/version
+        public async Task<ActionResult> GetVersion()
+        {
+            return Ok();
         }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.ResponseCompression;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
@@ -50,17 +49,20 @@ namespace OSItemIndex.API
 
             services.AddSwaggerGen(c =>
             {
+                var apiXml = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.API.xml");
+                var dataXml = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.Data.xml");
+
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OSItemIndex.API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.API.xml");
-                c.IncludeXmlComments(filePath);
-            });
+                c.IncludeXmlComments(apiXml);
+                c.IncludeXmlComments(dataXml);
+            }); // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"));
+            app.UseSwagger(c => { c.SerializeAsV2 = true; });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"); });
 
             app.UseRouting();
             app.UseHttpsRedirection();
