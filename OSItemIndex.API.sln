@@ -6,6 +6,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	..\docker-compose.yml = ..\docker-compose.yml
 	Dockerfile = Dockerfile
+	..\.env = ..\.env
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSItemIndex.API", "src\OSItemIndex.API\OSItemIndex.API.csproj", "{37059DD7-E108-44FC-9EFC-41BFC92F338B}"

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using OSItemIndex.API.Models;
 using OSItemIndex.API.Repositories;
@@ -21,10 +23,10 @@ namespace OSItemIndex.API.Services
             return await _repository.GetAsync(id);
         }
 
-        public async Task<IEnumerable<OsrsBoxItem>> GetItemsAsync(ItemQuery? query = null)
+        public async Task<IEnumerable<OsrsBoxItem>> GetItemsAsync(ItemQuery query = null, Expression<Func<OsrsBoxItem, OsrsBoxItem>> select = null)
         {
             return await (query == null
-                ? _repository.GetAllAsync()
+                ? _repository.GetAllAsync(select)
                 : _repository.GetAllAsync(item =>
                                               (string.IsNullOrEmpty(query.Name) || item.Name.Contains(query.Name)) &&
                                               (query.Duplicate == null || item.Duplicate == query.Duplicate) &&
@@ -32,7 +34,7 @@ namespace OSItemIndex.API.Services
                                               (query.Placeholder == null || item.Placeholder == query.Placeholder) &&
                                               (query.Stackable == null || item.Stackable == query.Stackable) &&
                                               (query.TradeableOnGe == null || item.TradeableOnGe == query.TradeableOnGe),
-                                          items => items.OrderBy(item => item.Id)));
+                                          items => items.OrderBy(item => item.Id), select));
         }
     }
 }

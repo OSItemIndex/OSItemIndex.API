@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OSItemIndex.API.Models;
 using OSItemIndex.API.Services;
 using OSItemIndex.Data;
+using Serilog;
+
+// curl https://localhost:5001/items -H "Accept-Encoding: gzip" -o nul
 
 namespace OSItemIndex.API.Controllers
 {
-    [Route("items")]
     [ApiController]
+    [Route("items")]
     public class ItemsController : ControllerBase
     {
         private readonly IItemsService _itemsService;
@@ -18,34 +23,62 @@ namespace OSItemIndex.API.Controllers
             _itemsService = itemsService;
         }
 
-        /// <summary>
-        ///     Returns a array of all items in the current database, with optional query filtering
-        /// </summary>
-        [HttpGet] // GET: items
+        [HttpGet(Name = "GetItems")]
         [Produces("application/json")]
         public async Task<ActionResult<IEnumerable<OsrsBoxItem>>> GetItems([FromQuery] ItemQuery query)
         {
             return Ok(await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null));
         }
 
-        /// <summary>
-        ///     Returns an item matching the specified Item ID
-        /// </summary>
-        /// <param name="id">Item ID</param>
-        [HttpGet] // GET: items/{id}
-        [Route("{id:int}")]
+        [HttpGet("simple", Name = "GetItemsSimple")]
         [Produces("application/json")]
-        public async Task<ActionResult<OsrsBoxItem>> GetItem(int id)
+        public async Task<ActionResult<IEnumerable<OsrsBoxItem>>> GetItemsSimple([FromQuery] ItemQuery query)
         {
-            var result = await _itemsService.GetItemAsync(id);
+            var result = await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null,
+                                                           item => new OsrsBoxItem
+                                                           {
+                                                               Id = item.Id,
+                                                               Name = item.Name,
+                                                               Duplicate = item.Duplicate,
+                                                               Noted = item.Noted,
+                                                               Stackable = item.Stackable,
+                                                               Placeholder = item.Placeholder,
+                                                               TradeableOnGe = item.TradeableOnGe,
+                                                               LastUpdated = item.LastUpdated
+                                                           });
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("/version")] // GET: items/version
-        public async Task<ActionResult> GetVersion()
+        [HttpGet("{id:int}", Name = "GetItemById")]
+        [Produces("application/json")]
+        public async Task<ActionResult<OsrsBoxItem>> GetItemById(
+            [Range(0, int.MaxValue, ErrorMessage = "ID cannot be negative")]
+            int id)
         {
-            return Ok();
+            return Ok(await _itemsService.GetItemAsync(id));
         }
+
+        /*[HttpGet("info", Name = "GetItemsInfo")]
+        [Produces("application/json")]
+        public async Task<ActionResult<OsrsBoxItem>> GetVersion()
+        {
+            return Ok(await _itemsService.GetVersionAsync());
+        }
+
+        [HttpPost(Name = "PostItems")]
+        [RequestSizeLimit(1_000_000_000)]
+        public async Task<ActionResult<OsrsBoxItem>> UpdateItems([FromBody] IDictionary<string, OsrsBoxItem> items, [FromQuery] string version)
+        {
+            await _itemsService.UpdateItemsAsync(items.Values, new EntityRepoVersion { Version = version });
+            return Ok(version);
+        }
+
+        [HttpPost("dict", Name = "PostItemsDict")]
+        [RequestSizeLimit(1_000_000_000)]
+        public async Task<ActionResult<OsrsBoxItem>> UpdateItems(IDictionary<string, OsrsBoxItem> items)
+        {
+            await _itemsService.UpdateItemsAsync(items.Values, null);
+            return Ok(items.Values.Count);
+        }*/
     }
 }
