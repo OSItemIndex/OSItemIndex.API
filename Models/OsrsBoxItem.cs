@@ -61,7 +61,7 @@ namespace OSItemIndex.Data
         /// The examine text for the item.
         /// </summary>
         [JsonPropertyName("examine")]
-        public string Examine { get; set; }
+        public string? Examine { get; set; }
 
         /// <summary>
         /// The high alchemy value of the item (cost * 0.6).
@@ -139,7 +139,7 @@ namespace OSItemIndex.Data
         /// Date the item was released (in ISO8601 format).
         /// </summary>
         [JsonPropertyName("release_date")]
-        public string ReleaseDate { get; set; }
+        public string? ReleaseDate { get; set; }
 
         /// <summary>
         /// If the item is stackable (in inventory).
@@ -179,22 +179,16 @@ namespace OSItemIndex.Data
         public double? Weight { get; set; }
 
         /// <summary>
-        /// The OSRS Wiki Exchange URL.
-        /// </summary>
-        [JsonPropertyName("wiki_exchange")]
-        public string WikiExchange { get; set; }
-
-        /// <summary>
         /// The OSRS Wiki name for the item.
         /// </summary>
         [JsonPropertyName("wiki_name")]
-        public string WikiName { get; set; }
+        public string? WikiName { get; set; }
 
         /// <summary>
         /// The OSRS Wiki URL (possibly including anchor link).
         /// </summary>
         [JsonPropertyName("wiki_url")]
-        public string WikiUrl { get; set; }
+        public string? WikiUrl { get; set; }
     }
 
     /// <summary>
@@ -326,13 +320,9 @@ namespace OSItemIndex.Data
         public class WeaponStance
         {
             [JsonPropertyName("attack_style")] public WeaponAttackStyle? AttackStyle { get; set; }
-
             [JsonPropertyName("attack_type")] public WeaponAttackType? AttackType { get; set; }
-
             [JsonPropertyName("boosts")] public WeaponBoosts? Boosts { get; set; }
-
             [JsonPropertyName("combat_style")] public WeaponCombatStyle? CombatStyle { get; set; }
-
             [JsonPropertyName("experience")] public WeaponExperienceStyle? Experience { get; set; }
         }
 
@@ -370,9 +360,7 @@ namespace OSItemIndex.Data
         public enum WeaponAttackType
         {
             [EnumMember(Value = "crush")] Crush,
-
-            [EnumMember(Value = "defensive casting")]
-            DefensiveCasting,
+            [EnumMember(Value = "defensive casting")] DefensiveCasting,
             [EnumMember(Value = "magic")] Magic,
             [EnumMember(Value = "ranged")] Ranged,
             [EnumMember(Value = "slash")] Slash,
@@ -383,14 +371,9 @@ namespace OSItemIndex.Data
         [JsonConverter(typeof(JsonStringEnumMemberConverter))]
         public enum WeaponBoosts
         {
-            [EnumMember(Value = "accuracy and damage")]
-            AccuracyAndDamage,
-
-            [EnumMember(Value = "attack range by 2 squares")]
-            AttackRangeBy2Squares,
-
-            [EnumMember(Value = "attack speed by 1 tick")]
-            AttackSpeedBy1Tick
+            [EnumMember(Value = "accuracy and damage")] AccuracyAndDamage,
+            [EnumMember(Value = "attack range by 2 squares")] AttackRangeBy2Squares,
+            [EnumMember(Value = "attack speed by 1 tick")] AttackSpeedBy1Tick
         }
 
         [JsonConverter(typeof(JsonStringEnumMemberConverter))]
@@ -438,13 +421,9 @@ namespace OSItemIndex.Data
             [EnumMember(Value = "attack")] Attack,
             [EnumMember(Value = "defence")] Defence,
             [EnumMember(Value = "magic")] Magic,
-
-            [EnumMember(Value = "magic and defence")]
-            MagicAndDefence,
+            [EnumMember(Value = "magic and defence")] MagicAndDefence,
             [EnumMember(Value = "ranged")] Ranged,
-
-            [EnumMember(Value = "ranged and defence")]
-            RangedAndDefence,
+            [EnumMember(Value = "ranged and defence")] RangedAndDefence,
             [EnumMember(Value = "shared")] Shared,
             [EnumMember(Value = "strength")] Strength
         }
