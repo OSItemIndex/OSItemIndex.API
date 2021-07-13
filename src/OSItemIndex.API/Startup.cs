@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.ResponseCompression;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
 using OSItemIndex.Data;
+using OSItemIndex.Data.Database;
 using OSItemIndex.Data.Extensions;
-#pragma warning disable 1591
 
 namespace OSItemIndex.API
 {
@@ -42,9 +42,11 @@ namespace OSItemIndex.API
                 options.Providers.Add<BrotliCompressionProvider>();
                 options.Providers.Add<GzipCompressionProvider>();
             });
-            services.AddEntityFrameworkContext(_configuration);
 
-            services.AddSingleton<IEntityRepository<OsrsBoxItem>, ItemRepository>();
+            services.AddEntityFrameworkContext(_configuration);
+            services.AddSingleton<IDbInitializerService, DbInitializerService>();
+
+            services.AddSingleton<IEntityRepository<OsrsBoxItem>, EntityRepository<OsrsBoxItem>>();
             services.AddSingleton<IItemsService, ItemsService>();
 
             services.AddSwaggerGen(c =>
@@ -52,27 +54,42 @@ namespace OSItemIndex.API
                 var apiXml = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.API.xml");
                 var dataXml = Path.Combine(AppContext.BaseDirectory, "OSItemIndex.Data.xml");
 
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OSItemIndex.API", Version = "v1" });
+                c.EnableAnnotations();
                 c.IncludeXmlComments(apiXml);
                 c.IncludeXmlComments(dataXml);
+
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OSItemIndex.API", Version = "v1" });
             }); // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio
+            // https://github.com/unchase/Unchase.Swashbuckle.AspNetCore.Extensions
+
+            /*services.AddCors(options =>
+            {
+                options.AddPolicy(name: "_myAllowSpecificOrigins",
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:8080");
+                                  });
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger(c => { c.SerializeAsV2 = true; });
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"); });
+            app.UseSwagger(c =>
+            {
+                /*c.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    swagger.Servers = new List<OpenApiServer> { new() { Url = $"ositemindex.com" } };
+                });*/
+            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "OSItemIndex.API v1");});
 
+            app.UsePathBase("/api");
             app.UseRouting();
             app.UseHttpsRedirection();
-            app.UseAuthorization();
             app.UseResponseCompression();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
