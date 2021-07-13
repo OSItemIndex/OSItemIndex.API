@@ -46,7 +46,8 @@ namespace OSItemIndex.API
             services.AddEntityFrameworkContext(_configuration);
             services.AddSingleton<IDbInitializerService, DbInitializerService>();
 
-            services.AddSingleton<IEntityRepository<OsrsBoxItem>, EntityRepository<OsrsBoxItem>>();
+            services.AddSingleton<IEntityRepository<OsrsBoxItem>, ItemsRepository>();
+
             services.AddSingleton<IItemsService, ItemsService>();
 
             services.AddSwaggerGen(c =>
