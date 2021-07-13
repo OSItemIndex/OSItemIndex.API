@@ -6,7 +6,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR .
 COPY ["src/OSItemIndex.API/OSItemIndex.API.csproj", "src/OSItemIndex.API/"]
-COPY ["src/OSItemIndex.Data/OsItemIndex.Data.csproj", "src/OSItemIndex.Data/"]
+COPY ["src/OSItemIndex.Data/OSItemIndex.Data.csproj", "src/OSItemIndex.Data/"]
 RUN dotnet restore "src/OSItemIndex.API/OSItemIndex.API.csproj"
 COPY . .
 WORKDIR "/src/OSItemIndex.API"
