@@ -83,13 +83,12 @@ namespace OSItemIndex.API
                     swagger.Servers = new List<OpenApiServer> { new() { Url = $"ositemindex.com" } };
                 });*/
             });
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "OSItemIndex.API v1");});
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"); });
 
             app.UsePathBase("/api");
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseResponseCompression();
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
