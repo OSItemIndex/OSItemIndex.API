@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OSItemIndex.API.Models;
@@ -12,7 +13,7 @@ namespace OSItemIndex.API.Controllers
 {
     [ApiController]
     [Route("items")]
-    public class ItemsController : ControllerBase
+    public class ItemsController : Controller
     {
         private readonly IItemsService _itemsService;
 
@@ -26,7 +27,7 @@ namespace OSItemIndex.API.Controllers
         [ResponseCache(VaryByHeader = "Accept-Encoding", Duration = 600)]
         public async Task<ActionResult<IEnumerable<OsrsBoxItem>>> GetItems([FromQuery] ItemQuery query)
         {
-            return Ok(await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null));
+            return Json(await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null));
         }
 
         [HttpGet("simple", Name = "GetItemsSimple")]
@@ -46,7 +47,7 @@ namespace OSItemIndex.API.Controllers
                                                                TradeableOnGe = item.TradeableOnGe,
                                                                LastUpdated = item.LastUpdated
                                                            });
-            return Ok(result);
+            return Json(result, new JsonSerializerOptions { IgnoreNullValues = true });
         }
 
         [HttpGet("{id:int}", Name = "GetItemById")]
@@ -55,30 +56,7 @@ namespace OSItemIndex.API.Controllers
             [Range(0, int.MaxValue, ErrorMessage = "ID cannot be negative")]
             int id)
         {
-            return Ok(await _itemsService.GetItemAsync(id));
+            return Json(await _itemsService.GetItemAsync(id));
         }
-
-        /*[HttpGet("info", Name = "GetItemsInfo")]
-        [Produces("application/json")]
-        public async Task<ActionResult<OsrsBoxItem>> GetVersion()
-        {
-            return Ok(await _itemsService.GetVersionAsync());
-        }
-
-        [HttpPost(Name = "PostItems")]
-        [RequestSizeLimit(1_000_000_000)]
-        public async Task<ActionResult<OsrsBoxItem>> UpdateItems([FromBody] IDictionary<string, OsrsBoxItem> items, [FromQuery] string version)
-        {
-            await _itemsService.UpdateItemsAsync(items.Values, new EntityRepoVersion { Version = version });
-            return Ok(version);
-        }
-
-        [HttpPost("dict", Name = "PostItemsDict")]
-        [RequestSizeLimit(1_000_000_000)]
-        public async Task<ActionResult<OsrsBoxItem>> UpdateItems(IDictionary<string, OsrsBoxItem> items)
-        {
-            await _itemsService.UpdateItemsAsync(items.Values, null);
-            return Ok(items.Values.Count);
-        }*/
     }
 }
