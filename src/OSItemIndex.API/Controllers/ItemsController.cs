@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OSItemIndex.API.Models;
 using OSItemIndex.API.Services;
 using OSItemIndex.Data;
-using Serilog;
 
 // curl https://localhost:5001/items -H "Accept-Encoding: gzip" -o nul
 
@@ -25,6 +23,7 @@ namespace OSItemIndex.API.Controllers
 
         [HttpGet(Name = "GetItems")]
         [Produces("application/json")]
+        [ResponseCache(VaryByHeader = "Accept-Encoding", Duration = 600)]
         public async Task<ActionResult<IEnumerable<OsrsBoxItem>>> GetItems([FromQuery] ItemQuery query)
         {
             return Ok(await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null));
@@ -32,6 +31,7 @@ namespace OSItemIndex.API.Controllers
 
         [HttpGet("simple", Name = "GetItemsSimple")]
         [Produces("application/json")]
+        [ResponseCache(VaryByHeader = "Accept-Encoding", Duration = 600)]
         public async Task<ActionResult<IEnumerable<OsrsBoxItem>>> GetItemsSimple([FromQuery] ItemQuery query)
         {
             var result = await _itemsService.GetItemsAsync(Request.QueryString.HasValue ? query : null,

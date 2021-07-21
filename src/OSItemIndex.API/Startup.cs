@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.ResponseCompression;
 using OSItemIndex.API.Repositories;
@@ -78,12 +79,15 @@ namespace OSItemIndex.API
         {
             app.UseSwagger(c =>
             {
-                /*c.PreSerializeFilters.Add((swagger, httpReq) =>
+                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                 {
-                    swagger.Servers = new List<OpenApiServer> { new() { Url = $"ositemindex.com" } };
-                });*/
+                    swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/api" } };
+                });
             });
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"); });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1");
+            });
 
             app.UsePathBase("/api");
             app.UseRouting();
