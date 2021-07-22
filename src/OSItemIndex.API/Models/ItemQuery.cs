@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace OSItemIndex.API.Models
+﻿namespace OSItemIndex.API.Models
 {
     public class ItemQuery
     {

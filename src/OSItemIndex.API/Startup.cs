@@ -6,12 +6,16 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.ResponseCompression;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
 using OSItemIndex.Data;
 using OSItemIndex.Data.Database;
 using OSItemIndex.Data.Extensions;
+using OSItemIndex.Data.Repositories;
+using OSItemIndex.Data.Services;
 
 namespace OSItemIndex.API
 {
@@ -47,6 +51,9 @@ namespace OSItemIndex.API
             services.AddEntityFrameworkContext(_configuration);
             services.AddSingleton<IDbInitializerService, DbInitializerService>();
 
+            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IEventService, EventService>();
+
             services.AddSingleton<IEntityRepository<OsrsBoxItem>, ItemsRepository>();
 
             services.AddSingleton<IItemsService, ItemsService>();
@@ -64,14 +71,7 @@ namespace OSItemIndex.API
             }); // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio
             // https://github.com/unchase/Unchase.Swashbuckle.AspNetCore.Extensions
 
-            /*services.AddCors(options =>
-            {
-                options.AddPolicy(name: "_myAllowSpecificOrigins",
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:8080");
-                                  });
-            });*/
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
