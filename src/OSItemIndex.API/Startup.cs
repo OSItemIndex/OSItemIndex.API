@@ -6,8 +6,6 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.ResponseCompression;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
@@ -21,6 +19,7 @@ namespace OSItemIndex.API
 {
     public class Startup
     {
+        private readonly string _corsOrigins = "_corsOrigins";
         private readonly IConfiguration _configuration;
 
         public Startup(IWebHostEnvironment env)
@@ -71,12 +70,24 @@ namespace OSItemIndex.API
             }); // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio
             // https://github.com/unchase/Unchase.Swashbuckle.AspNetCore.Extensions
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(_corsOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://ositemindex.com")
+                                             .WithOrigins("https://localhost")
+                                             .WithOrigins("http://localhost")
+                                             .AllowAnyHeader();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(_corsOrigins);
+
             app.UseSwagger(c =>
             {
                 c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
