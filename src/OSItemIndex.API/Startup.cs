@@ -19,7 +19,7 @@ namespace OSItemIndex.API
 {
     public class Startup
     {
-        private readonly string _corsOrigins = "_corsOrigins";
+        private const string CorsPolicy = "_corsPolicy";
         private readonly IConfiguration _configuration;
 
         public Startup(IWebHostEnvironment env)
@@ -39,13 +39,24 @@ namespace OSItemIndex.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://ositemindex.com", "http://localhost:8080")
+                                             .AllowAnyHeader();
+                                  });
+            });
+
             services.AddResponseCompression(options =>
             {
                 options.EnableForHttps = true;
                 options.Providers.Add<BrotliCompressionProvider>();
                 options.Providers.Add<GzipCompressionProvider>();
             });
+
+            services.AddControllers();
 
             services.AddEntityFrameworkContext(_configuration);
             services.AddSingleton<IDbInitializerService, DbInitializerService>();
@@ -69,24 +80,12 @@ namespace OSItemIndex.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OSItemIndex.API", Version = "v1" });
             }); // https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio
             // https://github.com/unchase/Unchase.Swashbuckle.AspNetCore.Extensions
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(_corsOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("https://ositemindex.com")
-                                             .WithOrigins("https://localhost")
-                                             .WithOrigins("http://localhost")
-                                             .AllowAnyHeader();
-                                  });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(_corsOrigins);
+            app.UseCors(CorsPolicy);
 
             app.UseSwagger(c =>
             {
