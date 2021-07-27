@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Hosting;
 using OSItemIndex.API.Repositories;
 using OSItemIndex.API.Services;
 using OSItemIndex.Data;
@@ -86,22 +87,19 @@ namespace OSItemIndex.API
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(CorsPolicy);
+            app.UsePathBase("/api");
 
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1"); });
             app.UseSwagger(c =>
             {
                 c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                 {
-                    swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/api" } };
+                    var scheme = env.IsDevelopment() ? "http" : "https";
+                    swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{scheme}://{httpReq.Host.Value}/api" } };
                 });
             });
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OSItemIndex.API v1");
-            });
 
-            app.UsePathBase("/api");
             app.UseRouting();
-            app.UseHttpsRedirection();
             app.UseResponseCompression();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
