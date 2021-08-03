@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <None Remove="OSItemIndex.API.csproj.DotSettings" />
-    <None Remove="specs\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,34 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="specs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="specs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="specs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="specs\openapi.json" />
-    <_ContentIncludedByDefault Remove="specs\swagger.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OSItemIndex.Data\OSItemIndex.Data.csproj" />
   </ItemGroup>
-
-<!--  <Target Name="ToolRestore" AfterTargets="CollectPackageReferences">
-    <Exec Command="dotnet tool restore" />
-  </Target>
-
-  <Target Name="GenerateSwagger" AfterTargets="AfterBuild">
-    <MakeDir Directories="specs" />
-    <Exec Command="dotnet swagger tofile &#45;&#45;output specs/openapi.json $(OutputPath)$(AssemblyName).dll v1" />
-    <Exec Command="dotnet swagger tofile &#45;&#45;serializeasv2 &#45;&#45;output specs/swagger.json $(OutputPath)$(AssemblyName).dll v1" />
-  </Target>-->
 
 </Project>
