@@ -7,7 +7,7 @@ using OSItemIndex.Data;
 
 namespace OSItemIndex.API.Repositories
 {
-    public interface IEntityRepository<T> where T : ItemEntity
+    public interface IEntityRepository<T> where T : Entity
     {
         Task<int> CountAsync();
         Task<T> GetAsync(int id);

@@ -10,7 +10,7 @@ using OSItemIndex.Data.Database;
 
 namespace OSItemIndex.API.Repositories
 {
-    public abstract class EntityRepository<T> : IEntityRepository<T> where T : ItemEntity
+    public abstract class EntityRepository<T> : IEntityRepository<T> where T : Entity
     {
         private readonly IDbContextHelper _context;
 
